@@ -1,2 +1,0 @@
-# Smartybj
-Smartybj
