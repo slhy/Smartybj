@@ -2,18 +2,38 @@ package com.saw.smartybj;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
+import com.saw.smartybj.view.LeftMenuFragment;
+import com.saw.smartybj.view.MainContentFragment;
 
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
 import android.view.Window;
 
 public class MainActivity extends SlidingFragmentActivity {
 
+	private static final String LEFT_MENU_TAG = "LEFT_MENU_TAG";
+	private static final String MAIN_MENU_TAG = "MAIN_MENU_TAG";
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);//隐藏标题
-		initView();
+		initView();//初始化界面
+		initData();//初始化数据
+	}
+
+	private void initData() {
+		FragmentManager fragmentManager = getSupportFragmentManager();
+		//获取事务
+		FragmentTransaction transaction = fragmentManager.beginTransaction();
+		//完成左侧界面菜单的替换
+		transaction.replace(R.id.fl_left_menu, new LeftMenuFragment(), LEFT_MENU_TAG);
+		//完成主界面的替换
+		transaction.replace(R.id.fl_main_menu, new MainContentFragment(), MAIN_MENU_TAG);
+		//提交事务
+		transaction.commit();
 	}
 
 	private void initView() {
