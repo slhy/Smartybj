@@ -1,15 +1,35 @@
 package com.saw.smartybj;
 
-import android.os.Bundle;
-import android.app.Activity;
-import android.view.Menu;
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
+import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
 
-public class MainActivity extends Activity {
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.Window;
+
+public class MainActivity extends SlidingFragmentActivity {
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);//隐藏标题
+		initView();
+	}
+
+	private void initView() {
+		//设置主界面
+		setContentView(R.layout.fragment_content);
+		
+		//设置左侧菜单界面
+		setBehindContentView(R.layout.fragment_left);
+		
+		//设置滑动模式
+		SlidingMenu sm = getSlidingMenu();
+		sm.setMode(SlidingMenu.LEFT);//设置左侧可以滑动
+		//设置滑动位置
+		sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);//全屏
+		//设置主界面左侧滑动后剩余的空间位置
+		sm.setBehindOffset(250);
 	}
 
 	@Override
