@@ -18,7 +18,8 @@ import android.support.v4.view.ViewPager;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TextView;
 
 /**
@@ -32,11 +33,70 @@ public class MainContentFragment extends BaseFragment {
 	private ViewPager viewPager;
 	
 	@ViewInject(R.id.rg_content_radios)
-	private RadioButton rb_radio;
+	private RadioGroup rg_radios;
+	
+	private int selectIndex; //设置当前选中的页面编号
 	
 	private List<BaseTagPage> pages = new ArrayList<BaseTagPage>();
 	
 	
+	@Override
+	public void initEvent() {
+		// TODO Auto-generated method stub
+		//添加自己的事件
+		//单选按钮的切换事件
+		rg_radios.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+			
+			@Override
+			public void onCheckedChanged(RadioGroup group, int checkedId) {
+				// TODO Auto-generated method stub
+				
+				//五个单选按钮
+				switch (checkedId) {
+					case R.id.rb_main_content_home://主界面
+						selectIndex = 0;
+						break;
+					case R.id.rb_main_content_newscenter://新闻中心
+						selectIndex = 1;
+						break;
+					case R.id.rb_main_content_smartservice://智慧服务
+						selectIndex = 2;	
+						break;
+					case R.id.rb_main_content_govaffairs://政务
+						selectIndex = 3;
+						break;
+					case R.id.rb_main_content_settingcenter://设置中心
+						selectIndex = 4;
+						break;
+	
+					default:
+						break;
+				}//end
+				
+				switchPage(selectIndex);
+				
+			}
+
+			
+		});
+		super.initEvent();
+	}
+	/**
+	 * 设置选中的页面
+	 * @param selectIndex
+	 */
+	protected void switchPage(int selectIndex) {
+		// TODO Auto-generated method stub
+//		BaseTagPage currentPage = pages.get(selectIndex);
+		viewPager.setCurrentItem(selectIndex);//设置ViewPage当前显示页
+		
+		//如果是第一个或者是最后一个不让左侧菜单活动出来（首页和设置中心）
+		if (selectIndex == 0 || selectIndex == pages.size() - 1) {
+			//不让左侧菜单滑动出来
+		} else {
+			//可以左侧菜单滑动出来
+		}
+	}
 	
 	@Override
 	public View initView() {
