@@ -4,3 +4,4 @@ gen
 .project
 .settings
 /project.properties
+/libs/android-support-v4.jar

@@ -3,7 +3,6 @@ package com.saw.smartybj.view;
 import com.saw.smartybj.MainActivity;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,7 +25,7 @@ public abstract class BaseFragment extends Fragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater,
-			@Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+			 ViewGroup container,  Bundle savedInstanceState) {
 		View root = initView();//初始化界面
 		return root;
 	}
@@ -49,7 +48,7 @@ public abstract class BaseFragment extends Fragment {
 		
 	}
 	@Override
-	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+	public void onActivityCreated(Bundle savedInstanceState) {
 		//初始化事件和数据
 		super.onActivityCreated(savedInstanceState);
 		//初始化数据
