@@ -15,6 +15,7 @@ public class MainActivity extends SlidingFragmentActivity {
 
 	private static final String LEFT_MENU_TAG = "LEFT_MENU_TAG";
 	private static final String MAIN_MENU_TAG = "MAIN_MENU_TAG";
+	
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
