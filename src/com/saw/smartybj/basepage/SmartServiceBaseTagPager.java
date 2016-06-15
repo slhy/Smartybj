@@ -18,10 +18,13 @@ public class SmartServiceBaseTagPager extends BaseTagPage {
 	@Override
 	public void initData() {
 		tv_title.setText("智慧服务");
+		//要展示的内容，替换掉白纸 fl_content;//内容  FrameLayout
 		TextView tv = new TextView(context);
 		tv.setText("智慧服务的内容");
 		tv.setTextSize(25);
 		tv.setGravity(Gravity.CENTER);
+		//添加到白纸中
+		fl_content.addView(tv);
 		super.initData();
 	}
 

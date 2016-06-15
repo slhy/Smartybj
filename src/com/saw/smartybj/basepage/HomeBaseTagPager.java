@@ -18,11 +18,14 @@ public class HomeBaseTagPager extends BaseTagPage {
 	
 	@Override
 	public void initData() {
+		//设置本page的标题
 		tv_title.setText("首页");
+		//要展示的内容，替换掉白纸 fl_content;//内容  FrameLayout
 		TextView tv = new TextView(context);
 		tv.setText("首页的内容");
 		tv.setTextSize(25);
 		tv.setGravity(Gravity.CENTER);
+		fl_content.addView(tv);
 		super.initData();
 	}
 
