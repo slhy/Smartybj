@@ -16,5 +16,19 @@
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
+    
+    <!-- radioButton的样式抽取 -->
+    <style name="radioButtonStyle">
+      <item name="android:layout_width">0dip</item>
+      <item name="android:layout_height">wrap_content</item>
+      <item name="android:layout_weight">1</item>
+      <item name="android:button">@null</item>
+      <item name="android:layout_gravity">center</item>
+      <item name="android:gravity">center</item>
+      <item name="android:drawablePadding">5dip</item>
+      <item name="android:textSize">14sp</item>
+      <item name="android:background">@android:color/transparent</item>
+      <item name="android:textColor">@color/rb_colors_selector</item>
+    </style>
 
 </resources>

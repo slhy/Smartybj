@@ -38,7 +38,7 @@ public class MainActivity extends SlidingFragmentActivity {
 
 	private void initView() {
 		//设置主界面
-		setContentView(R.layout.fragment_content);
+		setContentView(R.layout.fragment_content_tag);
 		
 		//设置左侧菜单界面
 		setBehindContentView(R.layout.fragment_left);
