@@ -2,6 +2,7 @@ package com.saw.smartybj.basepage;
 
 import android.content.Context;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.TextView;
 
 /**
@@ -18,6 +19,8 @@ public class HomeBaseTagPager extends BaseTagPage {
 	
 	@Override
 	public void initData() {
+		//屏蔽菜单按钮
+		ib_menu.setVisibility(View.GONE);
 		//设置本page的标题
 		tv_title.setText("首页");
 		//要展示的内容，替换掉白纸 fl_content;//内容  FrameLayout

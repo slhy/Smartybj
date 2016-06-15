@@ -16,7 +16,7 @@ import android.widget.TextView;
 public class BaseTagPage {
 	protected Context context;
 	protected View root;
-	protected ImageButton iv_menu;//按钮ImageButton
+	protected ImageButton ib_menu;//按钮ImageButton
 	protected TextView tv_title;//标题TextView
 	protected FrameLayout fl_content;//内容  FrameLayout
 	public BaseTagPage(Context context) {
@@ -31,7 +31,7 @@ public class BaseTagPage {
 		//界面的根布局
 		root = View.inflate(context, R.layout.fragment_content_base_content, null);
 		
-		iv_menu = (ImageButton) root.findViewById(R.id.ib_base_content_menu);
+		ib_menu = (ImageButton) root.findViewById(R.id.ib_base_content_menu);
 		
 		tv_title = (TextView) root.findViewById(R.id.tv_base_content_title);
 		
