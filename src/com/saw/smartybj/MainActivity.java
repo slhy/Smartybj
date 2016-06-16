@@ -2,6 +2,7 @@ package com.saw.smartybj;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
+import com.saw.smartybj.utils.DensityUtil;
 import com.saw.smartybj.view.LeftMenuFragment;
 import com.saw.smartybj.view.MainContentFragment;
 
@@ -67,7 +68,8 @@ public class MainActivity extends SlidingFragmentActivity {
 		//设置滑动位置
 		sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);//全屏
 		//设置主界面左侧滑动后剩余的空间位置
-		sm.setBehindOffset(250);
+		int px = 250;
+		sm.setBehindOffset(px);
 	}
 
 	@Override
