@@ -1,5 +1,7 @@
 package com.saw.smartybj.basepage;
 
+import com.saw.smartybj.MainActivity;
+
 import android.content.Context;
 import android.view.Gravity;
 import android.view.View;
@@ -12,8 +14,8 @@ import android.widget.TextView;
  */
 public class HomeBaseTagPager extends BaseTagPage {
 
-	public HomeBaseTagPager(Context context) {
-		super(context);
+	public HomeBaseTagPager(MainActivity mainActivity) {
+		super(mainActivity);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -24,7 +26,7 @@ public class HomeBaseTagPager extends BaseTagPage {
 		//设置本page的标题
 		tv_title.setText("首页");
 		//要展示的内容，替换掉白纸 fl_content;//内容  FrameLayout
-		TextView tv = new TextView(context);
+		TextView tv = new TextView(mainActivity);
 		tv.setText("首页的内容");
 		tv.setTextSize(25);
 		tv.setGravity(Gravity.CENTER);

@@ -3,6 +3,7 @@ package com.saw.smartybj.view;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.saw.smartybj.R;
@@ -91,8 +92,10 @@ public class MainContentFragment extends BaseFragment {
 		//如果是第一个或者是最后一个不让左侧菜单活动出来（首页和设置中心）
 		if (selectIndex == 0 || selectIndex == pages.size() - 1) {
 			//不让左侧菜单滑动出来
+			mainActivity.getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);//不处理滑动
 		} else {
 			//可以左侧菜单滑动出来
+			mainActivity.getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);//全屏滑动
 		}
 	}
 	
@@ -121,6 +124,11 @@ public class MainContentFragment extends BaseFragment {
 		//设置适配器
 		MyAdapter adapter = new MyAdapter();
 		viewPager.setAdapter(adapter);
+		
+		//设置默认选择首页
+		switchPage(selectIndex);
+		//设置第一个按钮被选中
+		rg_radios.check(R.id.rb_main_content_home);
 	}
 	
 	private class MyAdapter extends PagerAdapter {

@@ -1,5 +1,7 @@
 package com.saw.smartybj.basepage;
 
+import com.saw.smartybj.MainActivity;
+
 import android.content.Context;
 import android.view.Gravity;
 import android.widget.TextView;
@@ -11,8 +13,8 @@ import android.widget.TextView;
  */
 public class SmartServiceBaseTagPager extends BaseTagPage {
 
-	public SmartServiceBaseTagPager(Context context) {
-		super(context);
+	public SmartServiceBaseTagPager(MainActivity mainActivity) {
+		super(mainActivity);
 		// TODO Auto-generated constructor stub
 	}
 	@Override
@@ -20,7 +22,7 @@ public class SmartServiceBaseTagPager extends BaseTagPage {
 		//设置本page的标题
 		tv_title.setText("智慧服务");
 		//要展示的内容，替换掉白纸 fl_content;//内容  FrameLayout
-		TextView tv = new TextView(context);
+		TextView tv = new TextView(mainActivity);
 		tv.setText("智慧服务的内容");
 		tv.setTextSize(25);
 		tv.setGravity(Gravity.CENTER);
