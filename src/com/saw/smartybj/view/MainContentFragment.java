@@ -15,12 +15,10 @@ import com.saw.smartybj.basepage.SmartServiceBaseTagPager;
 
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
-import android.widget.TextView;
 
 /**
  * @author Administrator
