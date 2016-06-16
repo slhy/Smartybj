@@ -151,6 +151,8 @@ public class MainContentFragment extends BaseFragment {
 			BaseTagPage baseTagPage = pages.get(position);
 			View root = baseTagPage.getRoot();
 			container.addView(root);
+			//加载数据
+			baseTagPage.initData();
 			return root;
 		}
 

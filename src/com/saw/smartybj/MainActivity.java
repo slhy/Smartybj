@@ -36,7 +36,24 @@ public class MainActivity extends SlidingFragmentActivity {
 		//提交事务
 		transaction.commit();
 	}
-
+	/**
+	 * 返回左侧菜单的fragment
+	 * @return
+	 */
+	public LeftMenuFragment getLeftMenuFragment() {
+		FragmentManager fragmentManager = getSupportFragmentManager();
+		LeftMenuFragment leftFragment = (LeftMenuFragment) fragmentManager.findFragmentByTag(LEFT_MENU_TAG);
+		return leftFragment;
+	}
+	/**
+	 * 返回右侧（内容）菜单的fragment
+	 * @return
+	 */
+	public MainContentFragment getMainContentFragment() {
+		FragmentManager fragmentManager = getSupportFragmentManager();
+		MainContentFragment mainContentFragment = (MainContentFragment) fragmentManager.findFragmentByTag(MAIN_MENU_TAG);
+		return mainContentFragment;
+	}
 	private void initView() {
 		//设置主界面
 		setContentView(R.layout.fragment_content_tag);

@@ -24,7 +24,6 @@ public class BaseTagPage {
 	public BaseTagPage(MainActivity mainActivity) {
 		this.mainActivity = mainActivity;
 		initView();//初始化布局
-		initData();//初始化数据
 		initEvent();//初始化事件
 	}
 
@@ -39,6 +38,9 @@ public class BaseTagPage {
 		
 		fl_content = (FrameLayout) root.findViewById(R.id.fl_base_content_tag);
 	}
+	/**
+	 * 此方法再该页面数据显示的时候在调用
+	 */
 	public void initData() {
 		
 	}

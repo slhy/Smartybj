@@ -8,6 +8,7 @@ package com.saw.smartybj.utils;
  * @描述 TODO
  */
 public interface MyConstants {
+	String REQUEST_URL = "http://192.168.1.100/index.php/m/";
 	String CONFIGFILE = "cachevalue";//sp的文件名
 	String ISSETUP = "issetup";//是否设置过向导界面数据
 	

@@ -2,7 +2,6 @@ package com.saw.smartybj.basepage;
 
 import com.saw.smartybj.MainActivity;
 
-import android.content.Context;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
