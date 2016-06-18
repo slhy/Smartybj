@@ -60,4 +60,7 @@ public class BaseTagPage {
 	public View getRoot() {
 		return root;
 	}
+	public void switchPage(int position) {
+		
+	}
 }

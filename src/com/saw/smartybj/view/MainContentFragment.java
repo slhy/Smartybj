@@ -80,6 +80,12 @@ public class MainContentFragment extends BaseFragment {
 		});
 		super.initEvent();
 	}
+	
+	public void leftMenuClickSwitchPage(int subSelectIndex) {
+		BaseTagPage baseTagPage = pages.get(selectIndex);
+		baseTagPage.switchPage(subSelectIndex);
+	}
+	
 	/**
 	 * 设置选中的页面
 	 * @param selectIndex

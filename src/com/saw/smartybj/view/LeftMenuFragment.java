@@ -12,6 +12,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.saw.smartybj.R;
 import com.saw.smartybj.domain.NewsCenterData;
@@ -24,6 +25,17 @@ import com.saw.smartybj.utils.DensityUtil;
  * @描述 左侧菜单的fragment
  */
 public class LeftMenuFragment extends BaseFragment {
+	public interface OnSwitchPageListener {
+		void switchPage(int selectionIndex);
+	}
+	private OnSwitchPageListener switchListener;
+	/**
+	 * 设置监听回调接口
+	 * @param listener
+	 */
+	public void setOnSwitchPageListener(OnSwitchPageListener listener) {
+		this.switchListener = listener;
+	}
 	private List<NewsData> data = new ArrayList<NewsCenterData.NewsData>();//新闻中心左侧菜单的数据
 	private ListView lv_leftData;
 	private MyAdapter adapter;
@@ -43,6 +55,18 @@ public class LeftMenuFragment extends BaseFragment {
 				//更新界面
 				adapter.notifyDataSetChanged();
 				
+				//控制新闻中心，四个新闻页面的显示(两种方法，如下1，2)
+				//方法1
+				//mainActivity.getMainContentFragment().leftMenuClickSwitchPage(selectPosition);
+				//方法2(接口回调方式)
+				if (switchListener != null) {
+					switchListener.switchPage(selectPosition);
+				} else {
+					mainActivity.getMainContentFragment().leftMenuClickSwitchPage(selectPosition);
+				}
+				
+				//切换SlidingMenu的开关
+				mainActivity.getSlidingMenu().toggle();
 			}
 		});
 		super.initEvent();
