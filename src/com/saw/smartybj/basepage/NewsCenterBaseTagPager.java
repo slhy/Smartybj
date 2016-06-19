@@ -17,9 +17,11 @@ import com.saw.smartybj.newscenterpage.NewsBaseNewsCenterPage;
 import com.saw.smartybj.newscenterpage.PhotosBaseNewsCenterPage;
 import com.saw.smartybj.newscenterpage.TopicBaseNewsCenterPage;
 import com.saw.smartybj.utils.MyConstants;
+import com.saw.smartybj.utils.SpTools;
 import com.saw.smartybj.view.LeftMenuFragment.OnSwitchPageListener;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.widget.TextView;
 
@@ -32,6 +34,7 @@ public class NewsCenterBaseTagPager extends BaseTagPage {
 	
 	private List<BaseNewsCenterPage> newsCenterPages = new  ArrayList<BaseNewsCenterPage>();
 	private NewsCenterData newsCenterData;
+	private Gson gson;
 
 	public NewsCenterBaseTagPager(MainActivity mainActivity) {
 		super(mainActivity);
@@ -39,7 +42,14 @@ public class NewsCenterBaseTagPager extends BaseTagPage {
 	}
 	@Override
 	public void initData() {
-		//1.获取网络数据
+		//1.获取本地数据（缓存）
+		String jsonData = SpTools.getString(mainActivity, MyConstants.REQUEST_URL+"getCategory", "");
+		if (! TextUtils.isEmpty(jsonData)) {
+			//有本地数据
+			//从本地数据显示
+			parseData(jsonData);
+		}
+		//2.获取网络数据
 		HttpUtils httpUtils = new HttpUtils();
 		httpUtils.send(HttpMethod.GET, MyConstants.REQUEST_URL+"getCategory", new RequestCallBack<String>() {
 
@@ -48,6 +58,8 @@ public class NewsCenterBaseTagPager extends BaseTagPage {
 				// TODO Auto-generated method stub
 				//访问数据成功
 				String jsonData = responseInfo.result;
+				//保存到本地一份
+				SpTools.setString(mainActivity, MyConstants.REQUEST_URL+"getCategory", jsonData);
 				//2.解析数据
 				parseData(jsonData);
 			}
@@ -67,9 +79,10 @@ public class NewsCenterBaseTagPager extends BaseTagPage {
 	 * @param jsonData 从网络获取到的json数据
 	 */
 	protected void parseData(String jsonData) {
-		// TODO Auto-generated method stub
 		//google提供的json解析器
-		Gson gson = new Gson();
+		if (gson == null) {
+			gson = new Gson();
+		}
 		
 		newsCenterData = gson.fromJson(jsonData, NewsCenterData.class);
 //		System.out.println(jsonData);
