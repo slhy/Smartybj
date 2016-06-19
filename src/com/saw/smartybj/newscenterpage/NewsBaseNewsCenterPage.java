@@ -19,6 +19,7 @@ import com.saw.smartybj.MainActivity;
 import com.saw.smartybj.R;
 import com.saw.smartybj.domain.NewsCenterData;
 import com.saw.smartybj.domain.NewsCenterData.NewsData.ViewTagData;
+import com.saw.smartybj.newstpipage.TPINewsNewsCenterPager;
 import com.viewpagerindicator.TabPageIndicator;
 
 /**
@@ -141,12 +142,18 @@ public class NewsBaseNewsCenterPage extends BaseNewsCenterPage {
 		@Override
 		public Object instantiateItem(ViewGroup container, int position) {
 			// TODO Auto-generated method stub
+			//要展示的内容
+			TPINewsNewsCenterPager tpiPager = new TPINewsNewsCenterPager(mainActivity,viewTagDatas.get(position));
+			View rootView = tpiPager.getRoot();
+			container.addView(rootView);
+			return rootView;
+			/*
 			TextView tv = new TextView(mainActivity);
 			tv.setText(viewTagDatas.get(position).title);
 			tv.setTextSize(25);
 			tv.setGravity(Gravity.CENTER);
 			container.addView(tv);
-			return tv;
+			return tv;*/
 			
 		}
 		
