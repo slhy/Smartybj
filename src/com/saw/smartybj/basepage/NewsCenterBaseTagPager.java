@@ -93,7 +93,7 @@ public class NewsCenterBaseTagPager extends BaseTagPage {
 			//遍历四个新闻中心界面
 			switch (newsData.type) {
 				case 1://新闻页面
-					newsPage = new NewsBaseNewsCenterPage(mainActivity);
+					newsPage = new NewsBaseNewsCenterPage(mainActivity,newsCenterData.data.get(0).children);
 					break;
 				case 10://专题页面
 					newsPage = new TopicBaseNewsCenterPage(mainActivity);
@@ -127,6 +127,8 @@ public class NewsCenterBaseTagPager extends BaseTagPage {
 		//要展示的内容，替换掉白纸 fl_content;//内容  FrameLayout
 		//移除掉原来的画的内容
 		fl_content.removeAllViews();
+		//初始化数据
+		baseNewsCenterPage.initData();
 		//添加到白纸中
 		fl_content.addView(baseNewsCenterPage.getRoot());
 	}

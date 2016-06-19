@@ -16,6 +16,7 @@ public abstract class BaseNewsCenterPage {
 	public BaseNewsCenterPage(MainActivity mainActivity) {
 		this.mainActivity = mainActivity;
 		root = initView();
+		initEvent();
 	}
 	/**
 	 * 子类覆盖此方法完成事件的处理
