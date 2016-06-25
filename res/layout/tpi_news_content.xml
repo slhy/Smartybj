@@ -4,53 +4,15 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
     
-    <RelativeLayout 
-        android:layout_width="fill_parent"
-        android:layout_height="175dip"
-        >
-        <com.saw.smartybj.view.InterceptScrollViewPager
-            android:id="@+id/vp_tpi_news_lunbopic"
-            android:layout_width="fill_parent"
-            android:layout_height="175dip">
-            
-        </com.saw.smartybj.view.InterceptScrollViewPager>
-        
-        <RelativeLayout 
-            android:layout_width="fill_parent"
-            android:background="#44000000"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true">
-            
-            <TextView android:id="@+id/tv_tpi_news_desc"
-                android:padding="5dip"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="onenight in bj"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"/>
-            
-            <LinearLayout
-                android:id="@+id/ll_tpi_news_pic_points"
-                android:orientation="horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:paddingRight="8dip"
-                android:layout_centerVertical="true">
-                
-            </LinearLayout>
-            
-        </RelativeLayout>
-        
-    </RelativeLayout>
     
-    <LinearLayout 
-        android:id="@+id/lt_tpi_news_listnews"
-        android:orientation="vertical"
+    
+    <ListView 
+        android:cacheColorHint="#00000000"
+        android:id="@+id/lv_tpi_news_listnews"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
         
-    </LinearLayout>
+    </ListView>
     
     
 

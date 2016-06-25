@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="5dip" >
+    
+    <ImageView 
+        android:padding="1dip"
+        android:scaleType="fitXY"
+        android:background="#000000"
+        android:id="@+id/iv_tpi_news_listview_item_pic"
+        android:layout_width="100dip"
+        android:layout_height="60dip"
+        android:src="@drawable/pic_item_list_default"
+        />
+    
+    <TextView 
+        android:id="@+id/tv_tpi_news_listview_item_title"
+        android:layout_marginLeft="5dip"
+        android:layout_toRightOf="@id/iv_tpi_news_listview_item_pic"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="测试 "
+        
+        />
+    
+    <TextView
+        android:layout_alignLeft="@id/tv_tpi_news_listview_item_title"
+        android:layout_below="@id/tv_tpi_news_listview_item_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_tpi_news_listview_item_time"
+        android:text="2016-06-25 22:56"
+        />
+    
+    <ImageView 
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/iv_tpi_news_listview_item_icon"
+        android:src="@drawable/icon_news_comment_num"
+        />
+    
+    
+    
+
+</RelativeLayout>
