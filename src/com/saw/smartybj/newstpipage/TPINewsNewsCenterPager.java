@@ -57,7 +57,8 @@ public class TPINewsNewsCenterPager {
 	@ViewInject(R.id.ll_tpi_news_pic_points)
 	private LinearLayout ll_points;//轮播图的每张图片对应的点
 	@ViewInject(R.id.lv_tpi_news_listnews)
-	private ListView lv_listnews;//listview新闻列表
+	//private ListView lv_listnews;//listview新闻列表
+	private com.saw.smartybj.view.RefreshListView lv_listnews;//listview新闻列表
 	
 	
 	//数据
@@ -446,7 +447,8 @@ public class TPINewsNewsCenterPager {
 		View lunBoPic = View.inflate(mainActivity, R.layout.tpi_news_lunbopic, null);
 		ViewUtils.inject(this, lunBoPic);
 		//把轮播图加到ListView中
-		lv_listnews.addHeaderView(lunBoPic);
+		//lv_listnews.addHeaderView(lunBoPic);
+		lv_listnews.addLunBoView(lunBoPic);
 	}
 	public View getRoot() {
 		return root;
