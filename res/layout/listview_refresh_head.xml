@@ -21,6 +21,7 @@
 	        android:src="@drawable/common_listview_headview_red_arrow"/>
 	
 		<ProgressBar 
+		    android:visibility="invisible"
 		    android:indeterminateDrawable="@drawable/progress_style_shape"
 		    android:id="@+id/pb_listview_head_loading"
 		    android:layout_width="wrap_content"
