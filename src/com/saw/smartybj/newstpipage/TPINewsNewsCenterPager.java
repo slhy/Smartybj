@@ -90,6 +90,11 @@ public class TPINewsNewsCenterPager {
 	private List<TPINewsData_Data_ListNewsData> listNews = new ArrayList<TPINewsData.TPINewsData_Data.TPINewsData_Data_ListNewsData>();
 
 	private ListNewsAdapter listNewsAdapter;
+	
+	
+	private String loadingMoreDatasUrl;//加载更多数据的url
+	
+	private String loadingDataUrl;//获取数据的url
 
 	public TPINewsNewsCenterPager(MainActivity mainActivity, ViewTagData viewTagData) {
 		this.mainActivity = mainActivity;
@@ -109,13 +114,31 @@ public class TPINewsNewsCenterPager {
 	private void initEvent() {
 		//设置刷新数据事件
 		lv_listnews.setOnRefreshDataListener(new OnRefreshDataListener() {
-			
+			/**
+			 * 下拉刷新
+			 */
 			@Override
 			public void refreshData() {
 				isFresh = true;
 				//刷新数据
-				getDataFromNet();
+				getDataFromNet(MyConstants.REQUEST_HOST+viewTagData.url,false);
 				//改变listview的状态
+			}
+			/**
+			 * 上拉加载更多
+			 */
+			@Override
+			public void loadingMore() {
+				//判断是否有更多的数据
+				if (TextUtils.isEmpty(loadingMoreDatasUrl)) {
+					Toast.makeText(mainActivity, "没有更多数据", Toast.LENGTH_SHORT).show();
+					//关闭刷新数据的状态
+					lv_listnews.refreshStateFinish();
+				} else {
+					//有数据
+					getDataFromNet(loadingMoreDatasUrl,true);
+				}
+				
 			}
 		});
 		//给轮播图添加页面切换事件
@@ -155,15 +178,15 @@ public class TPINewsNewsCenterPager {
 		//轮播图的数据
 		//新闻列表的数据
 		//从本地获取数据
-		String jsonCache = SpTools.getString(mainActivity, MyConstants.REQUEST_HOST+viewTagData.url, "");
+		String jsonCache = SpTools.getString(mainActivity, loadingDataUrl, "");
 		if (! TextUtils.isEmpty(jsonCache)) {
 			//解析数据
 			newsData = parseJson(jsonCache);
 			//处理数据
 			processData(newsData);
 		}
-		
-		getDataFromNet();//从网络获取数据
+		loadingDataUrl = MyConstants.REQUEST_HOST+viewTagData.url;
+		getDataFromNet(loadingDataUrl,false);//从网络获取数据
 		
 	}
 	/**
@@ -173,6 +196,11 @@ public class TPINewsNewsCenterPager {
 	 */
 	private TPINewsData parseJson(String jsonData) {
 		TPINewsData tpiNewsData = gson.fromJson(jsonData, TPINewsData.class);
+		if (! TextUtils.isEmpty(tpiNewsData.data.more)) {
+			loadingMoreDatasUrl = MyConstants.REQUEST_HOST+tpiNewsData.data.more;
+		} else {
+			loadingMoreDatasUrl = "";
+		}
 		return tpiNewsData;
 	}
 	/**
@@ -256,6 +284,10 @@ public class TPINewsNewsCenterPager {
 	 * @param picSelectIndex2
 	 */
 	private void setPicAndPointSelect(int picSelectIndex) {
+		//越界判断
+		if (picSelectIndex < 0 || picSelectIndex > lunboDatas.size() - 1) {
+			return;
+		}
 		//设置描述信息
 		tv_pic_desc.setText(lunboDatas.get(picSelectIndex).title);
 		//设置点是否选中的
@@ -439,26 +471,37 @@ public class TPINewsNewsCenterPager {
 	/**
 	 * 获取网络数据
 	 */
-	private void getDataFromNet() {
+	private void getDataFromNet(final String url,final boolean isLoadingMore) {
 		//httpUtils
 		HttpUtils httpUtils = new HttpUtils();
-		httpUtils.send(HttpMethod.GET, MyConstants.REQUEST_HOST+viewTagData.url,new RequestCallBack<String>() {
+		httpUtils.send(HttpMethod.GET, url,new RequestCallBack<String>() {
 
 			@Override
 			public void onSuccess(ResponseInfo<String> responseInfo) {
 				//请求成功
 				String jsonData = responseInfo.result;
 				//保存数据到本地
-				SpTools.setString(mainActivity, viewTagData.url, jsonData);
+				SpTools.setString(mainActivity, url, jsonData);
 				//解析数据
 				newsData = parseJson(jsonData);
-				//处理数据
-				processData(newsData);
 				
-				if (isFresh) {
-					lv_listnews.refreshStateFinish();
-					Toast.makeText(mainActivity, "刷新数据成功", Toast.LENGTH_SHORT).show();
+				//是否是加载更多的数据
+				if (isLoadingMore) {
+					//原有的数据+新数据
+					listNews.addAll(newsData.data.news);
+					//更新界面
+					listNewsAdapter.notifyDataSetChanged();
+					Toast.makeText(mainActivity, "加载数据成功", Toast.LENGTH_SHORT).show();
+				} else {
+					//第一次取数据或者刷新数据
+					//处理数据
+					processData(newsData);
+					if (isFresh) {
+						Toast.makeText(mainActivity, "刷新数据成功", Toast.LENGTH_SHORT).show();
+					}
 				}
+				//设置listview有隐藏
+				lv_listnews.refreshStateFinish();
 				
 				
 			}

@@ -11,6 +11,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
+import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -44,10 +45,41 @@ public class RefreshListView extends ListView {
 	private RotateAnimation down_ra;//向下动画
 	private OnRefreshDataListener listener;//刷新数据的监听回调
 	private boolean isEnablePullRefresh;//下拉刷新是否可用
+	private boolean isLoadingMore;//是否是加载更多数据的操作
 	public RefreshListView(Context context, AttributeSet attrs, int defStyleAttr) {
 		super(context, attrs, defStyleAttr);
 		initView();
 		initAnimation();
+		initEvent();
+	}
+
+	private void initEvent() {
+		//添加当前listview的滑动事件
+		setOnScrollListener(new OnScrollListener() {
+			
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState) {
+				//状态停止，如果listview显示最后一条数据，加载更多数据的显示
+				//是否最后一条数据显示
+				if (getLastVisiblePosition() == getAdapter().getCount() - 1 && ! isLoadingMore) {
+					//最后一条数据，显示加载更多的组件
+					foot.setPadding(0, 0, 0, 0);//显示加载更多数据
+					setSelection(getAdapter().getCount());
+					//加载更多数据
+					isLoadingMore = true;
+					if (listener != null) {
+						listener.loadingMore();//实现该接口的组件去完成数据的加载
+					}
+				}
+			}
+			
+			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
 	}
 
 	public RefreshListView(Context context, AttributeSet attrs) {
@@ -137,6 +169,7 @@ public class RefreshListView extends ListView {
 	}
 	public interface OnRefreshDataListener {
 		void refreshData();
+		void loadingMore();
 	}
 	/**
 	 * 初始化动画
@@ -183,16 +216,25 @@ public class RefreshListView extends ListView {
 	 * 刷新数据成功，处理结果
 	 */
 	public void refreshStateFinish() {
-		//下拉刷新
-		//改变文字
-		tv_state.setText("下拉刷新");
-		iv_arrow.setVisibility(View.VISIBLE);//显示箭头
-		pb_loading.setVisibility(View.GONE);//隐藏进度条
-		//设置刷新时间为当前时间
-		tv_time.setText(getCurrentFormatDate());
-		//隐藏刷新的头布局
-		ll_refresh_head_root.setPadding(0, -ll_refresh_head_root_Height, 0, 0);
-		currentState = PULL_DOWN;//初始化为下拉刷新的状态
+		
+		if (isLoadingMore) {
+			//上拉加载更多
+			isLoadingMore = false;
+			//隐藏加载更多数据的组件
+			foot.setPadding(0, -ll_refresh_foot_root_Height, 0, 0);
+			
+		} else {
+			//下拉刷新
+			//改变文字
+			tv_state.setText("下拉刷新");
+			iv_arrow.setVisibility(View.VISIBLE);//显示箭头
+			pb_loading.setVisibility(View.GONE);//隐藏进度条
+			//设置刷新时间为当前时间
+			tv_time.setText(getCurrentFormatDate());
+			//隐藏刷新的头布局
+			ll_refresh_head_root.setPadding(0, -ll_refresh_head_root_Height, 0, 0);
+			currentState = PULL_DOWN;//初始化为下拉刷新的状态
+		}
 	}
 	private String getCurrentFormatDate() {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
