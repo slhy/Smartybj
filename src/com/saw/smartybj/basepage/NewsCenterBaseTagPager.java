@@ -43,7 +43,7 @@ public class NewsCenterBaseTagPager extends BaseTagPage {
 	@Override
 	public void initData() {
 		//1.获取本地数据（缓存）
-		String jsonData = SpTools.getString(mainActivity, MyConstants.REQUEST_URL+"getCategory", "");
+		String jsonData = SpTools.getString(mainActivity, MyConstants.REQUEST_HOST+"/categories.json", "");
 		if (! TextUtils.isEmpty(jsonData)) {
 			//有本地数据
 			//从本地数据显示
@@ -51,7 +51,7 @@ public class NewsCenterBaseTagPager extends BaseTagPage {
 		}
 		//2.获取网络数据
 		HttpUtils httpUtils = new HttpUtils();
-		httpUtils.send(HttpMethod.GET, MyConstants.REQUEST_URL+"getCategory", new RequestCallBack<String>() {
+		httpUtils.send(HttpMethod.GET, MyConstants.REQUEST_HOST+"/categories.json", new RequestCallBack<String>() {
 
 			@Override
 			public void onSuccess(ResponseInfo<String> responseInfo) {
@@ -59,7 +59,7 @@ public class NewsCenterBaseTagPager extends BaseTagPage {
 				//访问数据成功
 				String jsonData = responseInfo.result;
 				//保存到本地一份
-				SpTools.setString(mainActivity, MyConstants.REQUEST_URL+"getCategory", jsonData);
+				SpTools.setString(mainActivity, MyConstants.REQUEST_HOST+"/categories.json", jsonData);
 				//2.解析数据
 				parseData(jsonData);
 			}

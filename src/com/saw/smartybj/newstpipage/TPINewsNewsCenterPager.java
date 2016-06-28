@@ -20,6 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.lidroid.xutils.BitmapUtils;
@@ -39,6 +40,7 @@ import com.saw.smartybj.domain.TPINewsData.TPINewsData_Data.TPINewsData_Data_Lun
 import com.saw.smartybj.utils.DensityUtil;
 import com.saw.smartybj.utils.MyConstants;
 import com.saw.smartybj.utils.SpTools;
+import com.saw.smartybj.view.RefreshListView.OnRefreshDataListener;
 
 /**
  * @author Administrator
@@ -68,6 +70,8 @@ public class TPINewsNewsCenterPager {
 	private ViewTagData viewTagData;//页签对应的数据
 
 	private Gson gson;
+	
+	private boolean isFresh = false;//记录是否是刷新数据的状态
 
 	private TPINewsData newsData;
 	//轮播图的适配器
@@ -103,6 +107,17 @@ public class TPINewsNewsCenterPager {
 	}
 
 	private void initEvent() {
+		//设置刷新数据事件
+		lv_listnews.setOnRefreshDataListener(new OnRefreshDataListener() {
+			
+			@Override
+			public void refreshData() {
+				isFresh = true;
+				//刷新数据
+				getDataFromNet();
+				//改变listview的状态
+			}
+		});
 		//给轮播图添加页面切换事件
 		vp_lunbo.setOnPageChangeListener(new OnPageChangeListener() {
 			
@@ -151,12 +166,19 @@ public class TPINewsNewsCenterPager {
 		getDataFromNet();//从网络获取数据
 		
 	}
-	
+	/**
+	 * 解析json数据
+	 * @param jsonData
+	 * @return
+	 */
 	private TPINewsData parseJson(String jsonData) {
 		TPINewsData tpiNewsData = gson.fromJson(jsonData, TPINewsData.class);
 		return tpiNewsData;
 	}
-	
+	/**
+	 * 处理数据
+	 * @param newsData
+	 */
 	private void processData(TPINewsData newsData) {
 		//完成数据的处理
 		//1.设置轮播图的数据
@@ -414,7 +436,9 @@ public class TPINewsNewsCenterPager {
 		}
 		
 	}
-
+	/**
+	 * 获取网络数据
+	 */
 	private void getDataFromNet() {
 		//httpUtils
 		HttpUtils httpUtils = new HttpUtils();
@@ -430,11 +454,22 @@ public class TPINewsNewsCenterPager {
 				newsData = parseJson(jsonData);
 				//处理数据
 				processData(newsData);
+				
+				if (isFresh) {
+					lv_listnews.refreshStateFinish();
+					Toast.makeText(mainActivity, "刷新数据成功", Toast.LENGTH_SHORT).show();
+				}
+				
+				
 			}
 
 			@Override
 			public void onFailure(HttpException error, String msg) {
-				
+				//请求数据失败
+				if (isFresh) {
+					lv_listnews.refreshStateFinish();
+					Toast.makeText(mainActivity, "刷新数据失败", Toast.LENGTH_SHORT).show();
+				}
 			}
 		});
 	}
@@ -446,9 +481,11 @@ public class TPINewsNewsCenterPager {
 		
 		View lunBoPic = View.inflate(mainActivity, R.layout.tpi_news_lunbopic, null);
 		ViewUtils.inject(this, lunBoPic);
+		
+		//启用下拉刷新
+		lv_listnews.setIsRefreshHead(true);
 		//把轮播图加到ListView中
-		//lv_listnews.addHeaderView(lunBoPic);
-		lv_listnews.addLunBoView(lunBoPic);
+		lv_listnews.addHeaderView(lunBoPic);
 	}
 	public View getRoot() {
 		return root;

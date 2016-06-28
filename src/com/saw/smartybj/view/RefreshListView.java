@@ -1,5 +1,8 @@
 package com.saw.smartybj.view;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import com.saw.smartybj.R;
 
 import android.content.Context;
@@ -39,6 +42,8 @@ public class RefreshListView extends ListView {
 	private ProgressBar pb_loading;//下拉刷新的进度条
 	private RotateAnimation up_ra;////向上动画
 	private RotateAnimation down_ra;//向下动画
+	private OnRefreshDataListener listener;//刷新数据的监听回调
+	private boolean isEnablePullRefresh;//下拉刷新是否可用
 	public RefreshListView(Context context, AttributeSet attrs, int defStyleAttr) {
 		super(context, attrs, defStyleAttr);
 		initView();
@@ -67,6 +72,15 @@ public class RefreshListView extends ListView {
 			downY = ev.getY();//按下时y轴的坐标
 			break;
 		case MotionEvent.ACTION_MOVE://移动
+			//没有启用下拉刷新，后面的代码没必要执行
+			if (! isEnablePullRefresh) {
+				break;
+			}
+			//现在是否处于正在刷新数据的状态
+			if (currentState == REFRESHING) {
+				break;
+			}
+			
 			//判断轮播图是否完全显示
 			if (! isLunboFullShow()) {
 				break;
@@ -98,13 +112,35 @@ public class RefreshListView extends ListView {
 			break;
 		case MotionEvent.ACTION_UP://松开
 			downY = -1;
-			ll_refresh_head_root.setPadding(0, -ll_refresh_head_root_Height, 0, 0);
+			//如果是PULL_DOWN状态，松开恢复原状
+			if (currentState == PULL_DOWN) {
+				ll_refresh_head_root.setPadding(0, -ll_refresh_head_root_Height, 0, 0);
+			} else if(currentState == REFRESH_STATE) {
+				//刷新数据
+				ll_refresh_head_root.setPadding(0, 0, 0, 0);
+				currentState = REFRESHING;//改变状态为正在刷新数据的状态
+				refreshState();//刷新界面
+				//真的刷新数据
+				if (listener != null) {
+					listener.refreshData();
+				}
+			}
+			
 			break;
 		default:
 			break;
 		}
 		return super.onTouchEvent(ev);
 	}
+	public void setOnRefreshDataListener(OnRefreshDataListener listener) {
+		this.listener = listener;
+	}
+	public interface OnRefreshDataListener {
+		void refreshData();
+	}
+	/**
+	 * 初始化动画
+	 */
 	private void initAnimation() {
 		//向上动画
 		up_ra = new RotateAnimation(0, -180, 
@@ -119,6 +155,9 @@ public class RefreshListView extends ListView {
 		down_ra.setFillAfter(true);//停留在动画结束的状态
 		
 	}
+	/**
+	 * 刷新界面
+	 */
 	private void refreshState() {
 		switch (currentState) {
 		case PULL_DOWN://下拉刷新
@@ -130,12 +169,35 @@ public class RefreshListView extends ListView {
 			tv_state.setText("松开刷新");
 			iv_arrow.startAnimation(up_ra);
 			break;
-
+		case REFRESHING://正在刷新状态
+			iv_arrow.clearAnimation();//清除所有动画
+			iv_arrow.setVisibility(View.GONE);//隐藏箭头
+			pb_loading.setVisibility(View.VISIBLE);//显示进度条
+			tv_state.setText("正在刷新数据……");
+			break;
 		default:
 			break;
 		}
 	}
-
+	/**
+	 * 刷新数据成功，处理结果
+	 */
+	public void refreshStateFinish() {
+		//下拉刷新
+		//改变文字
+		tv_state.setText("下拉刷新");
+		iv_arrow.setVisibility(View.VISIBLE);//显示箭头
+		pb_loading.setVisibility(View.GONE);//隐藏进度条
+		//设置刷新时间为当前时间
+		tv_time.setText(getCurrentFormatDate());
+		//隐藏刷新的头布局
+		ll_refresh_head_root.setPadding(0, -ll_refresh_head_root_Height, 0, 0);
+		currentState = PULL_DOWN;//初始化为下拉刷新的状态
+	}
+	private String getCurrentFormatDate() {
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		return format.format(new Date());
+	}
 	/**
 	 * 判断轮播图是否完全显示
 	 * @return
@@ -161,15 +223,29 @@ public class RefreshListView extends ListView {
 		}
 		return true;
 	}
-
+	/**
+	 * 用户自己选择是否启用下拉刷新头的功能
+	 * @param isPullrefresh true启用下拉刷新 false不启用 默认false
+	 */
+	public void setIsRefreshHead(boolean isPullrefresh) {
+		isEnablePullRefresh = isPullrefresh;
+	}
 	/**
 	 * 轮播图view
 	 * @param view
 	 */
-	public void addLunBoView(View view) {
-		//轮播图的组件
-		lunbotu = view;
-		head.addView(view);
+	public void addHeaderView(View view) {
+		//判断 如果你使用下拉刷新，把头布局加下拉刷新的容器中，否则加载原生Listview中
+		if (isEnablePullRefresh) {
+			//启用下拉刷新
+			//轮播图的组件
+			lunbotu = view;
+			head.addView(view);
+		} else {
+			//使用原生的Listview
+			super.addHeaderView(view);
+		}
+		
 	}
 
 	/**
@@ -184,6 +260,7 @@ public class RefreshListView extends ListView {
 		tv_state = (TextView) head.findViewById(R.id.tv_listview_head_state_desc);
 		//最新的刷新时间
 		tv_time = (TextView) head.findViewById(R.id.tv_listview_head_refresh_time);
+		tv_time.setText(getCurrentFormatDate());
 		//下拉刷新的箭头
 		iv_arrow = (ImageView) head.findViewById(R.id.iv_listview_head_arrow);
 		//下拉刷新的进度条
