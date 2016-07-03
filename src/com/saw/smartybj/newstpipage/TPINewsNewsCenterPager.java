@@ -3,6 +3,7 @@ package com.saw.smartybj.newstpipage;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.Intent;
 import android.graphics.Bitmap.Config;
 import android.os.Handler;
 import android.support.v4.view.PagerAdapter;
@@ -13,12 +14,13 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +35,7 @@ import com.lidroid.xutils.http.client.HttpRequest.HttpMethod;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.saw.smartybj.MainActivity;
 import com.saw.smartybj.R;
+import com.saw.smartybj.activity.NewsDetailActivity;
 import com.saw.smartybj.domain.NewsCenterData.NewsData.ViewTagData;
 import com.saw.smartybj.domain.TPINewsData;
 import com.saw.smartybj.domain.TPINewsData.TPINewsData_Data.TPINewsData_Data_ListNewsData;
@@ -112,6 +115,27 @@ public class TPINewsNewsCenterPager {
 	}
 
 	private void initEvent() {
+		//给新闻列表加单击事件
+		lv_listnews.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position,
+					long id) {
+				// TODO Auto-generated method stub
+				//获取点击当前的新闻链接
+				TPINewsData_Data_ListNewsData tpiNewsData_Data_ListNewsData = listNews.get(position);
+				String newsurl = tpiNewsData_Data_ListNewsData.url;
+				
+				//修改读过的新闻字体颜色
+				
+				
+				//跳转到新闻页面显示新闻
+				Intent newsActivity = new Intent(mainActivity, NewsDetailActivity.class);
+				newsActivity.putExtra("newsurl", MyConstants.REQUEST_HOST+newsurl);
+				mainActivity.startActivity(newsActivity);
+			}
+		});
+		
 		//设置刷新数据事件
 		lv_listnews.setOnRefreshDataListener(new OnRefreshDataListener() {
 			/**
