@@ -5,3 +5,10 @@ gen
 .settings
 /project.properties
 /libs/android-support-v4.jar
+/xutils_library/.classpath
+/xutils_library/.project
+/xutils_library/.settings
+/xutils_library/bin
+/xutils_library/gen
+/SlidingMenu_library/.project
+/SlidingMenu_library/.classpath
