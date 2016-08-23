@@ -5,6 +5,7 @@ import java.util.List;
 
 import android.content.Intent;
 import android.graphics.Bitmap.Config;
+import android.graphics.Color;
 import android.os.Handler;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -123,12 +124,26 @@ public class TPINewsNewsCenterPager {
 					long id) {
 				// TODO Auto-generated method stub
 				//获取点击当前的新闻链接
-				TPINewsData_Data_ListNewsData tpiNewsData_Data_ListNewsData = listNews.get(position);
+				TPINewsData_Data_ListNewsData tpiNewsData_Data_ListNewsData = listNews.get(position - 1);
 				String newsurl = tpiNewsData_Data_ListNewsData.url;
 				
 				//修改读过的新闻字体颜色
-				
-				
+				//获取新闻的标记id
+				String newsid = tpiNewsData_Data_ListNewsData.id;
+				//保存id sharedprefrences
+				String readIDs = SpTools.getString(mainActivity, MyConstants.READNEWSIDS, null);
+				if (TextUtils.isEmpty(newsid)) {
+					//第一次 没有保存过id
+					readIDs = newsid;//保存当前新闻的id
+				} else if (! readIDs.contains(newsid)) {
+					//添加保存新闻id
+					readIDs += "," + newsid;
+				}
+				//重新保存度过的新闻的id
+				SpTools.setString(mainActivity, MyConstants.READNEWSIDS, readIDs);
+				//修改读过的新闻字体颜色
+				//告诉界面更新
+				listNewsAdapter.notifyDataSetChanged();
 				//跳转到新闻页面显示新闻
 				Intent newsActivity = new Intent(mainActivity, NewsDetailActivity.class);
 				newsActivity.putExtra("newsurl", MyConstants.REQUEST_HOST+newsurl);
@@ -384,6 +399,18 @@ public class TPINewsNewsCenterPager {
 			}
 			//设置数据
 			TPINewsData_Data_ListNewsData tpiNewsData_Data_ListNewsData = listNews.get(position);
+			//判断该新闻是否读取过
+			String newsId = tpiNewsData_Data_ListNewsData.id;
+			String readnewsIds = SpTools.getString(mainActivity, MyConstants.READNEWSIDS, "");
+			if (TextUtils.isEmpty(readnewsIds) || ! readnewsIds.contains(newsId)) {
+				//空 没有保存过id
+				holder.tv_title.setTextColor(Color.BLACK);
+				holder.tv_time.setTextColor(Color.BLACK);
+			} else {
+				holder.tv_title.setTextColor(Color.GRAY);
+				holder.tv_time.setTextColor(Color.GRAY);
+			}
+			
 			//设置标题
 			holder.tv_title.setText(tpiNewsData_Data_ListNewsData.title);
 			//设置时间
