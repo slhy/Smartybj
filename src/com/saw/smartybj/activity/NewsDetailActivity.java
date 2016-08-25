@@ -1,6 +1,7 @@
 package com.saw.smartybj.activity;
 
 import com.saw.smartybj.R;
+import com.saw.smartybj.utils.SharedAppUtils;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -65,7 +66,9 @@ public class NewsDetailActivity extends Activity {
 					//设置字体大小 
 					setTextSize();
 					break;
-
+				case R.id.ib_base_content_share://分享
+					SharedAppUtils.showShare(getApplicationContext());
+					break;
 				default:
 					break;
 				}
