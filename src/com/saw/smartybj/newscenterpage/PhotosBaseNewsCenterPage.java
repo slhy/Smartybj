@@ -85,15 +85,18 @@ public class PhotosBaseNewsCenterPage extends BaseNewsCenterPage {
 	
 	@Override
 	public void initData() {
-		//创建适配器
-		adapter = new MyAdapter();
-		
-		lv_photos.setAdapter(adapter);
-		gv_photos.setAdapter(adapter);
+		if (adapter == null) {
+			//创建适配器
+			adapter = new MyAdapter();
+			lv_photos.setAdapter(adapter);
+			gv_photos.setAdapter(adapter);
+		}
 		if (isShowList) {
 			lv_photos.setVisibility(View.VISIBLE);
-		} else {
 			gv_photos.setVisibility(View.GONE);
+		} else {
+			lv_photos.setVisibility(View.GONE);
+			gv_photos.setVisibility(View.VISIBLE);
 		}
 		
 		
