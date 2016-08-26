@@ -26,6 +26,7 @@
         android:gravity="left"
         android:layout_marginLeft="5dip"
         android:text="默认文字"
+        android:singleLine="true"
         android:textSize="18sp"/>
     
     </LinearLayout>
