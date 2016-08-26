@@ -53,6 +53,28 @@
         android:layout_centerVertical="true"
         android:layout_marginRight="5dip"
         >
+		    <!-- listview和gridview切换的按钮 -->
+		    
+		    <ImageButton
+                android:visibility="gone"
+            android:id="@+id/ib_base_content_listorgrid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dip"
+            android:background="@android:color/transparent"
+            android:src="@drawable/icon_pic_grid_type" />
+		    
+		    
+		    
+            <ImageButton
+                android:visibility="gone"
+            android:id="@+id/ib_base_content_textSize"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dip"
+            android:background="@android:color/transparent"
+            android:src="@drawable/icon_textsize" />
+            
             
             <ImageButton
                 android:visibility="gone"

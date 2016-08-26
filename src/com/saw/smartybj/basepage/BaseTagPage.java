@@ -21,6 +21,7 @@ public class BaseTagPage {
 	protected ImageButton ib_menu;//按钮ImageButton
 	protected TextView tv_title;//标题TextView
 	protected FrameLayout fl_content;//内容  FrameLayout
+	protected ImageButton ib_listorgrid;
 	public BaseTagPage(MainActivity mainActivity) {
 		this.mainActivity = mainActivity;
 		initView();//初始化布局
@@ -37,6 +38,7 @@ public class BaseTagPage {
 		tv_title = (TextView) root.findViewById(R.id.tv_base_content_title);
 		
 		fl_content = (FrameLayout) root.findViewById(R.id.fl_base_content_tag);
+		ib_listorgrid = (ImageButton) root.findViewById(R.id.ib_base_content_listorgrid);
 	}
 	/**
 	 * 此方法再该页面数据显示的时候在调用

@@ -9,6 +9,7 @@ import com.lidroid.xutils.exception.HttpException;
 import com.lidroid.xutils.http.ResponseInfo;
 import com.lidroid.xutils.http.callback.RequestCallBack;
 import com.lidroid.xutils.http.client.HttpRequest.HttpMethod;
+import com.lidroid.xutils.view.annotation.ViewInject;
 import com.saw.smartybj.MainActivity;
 import com.saw.smartybj.domain.NewsCenterData;
 import com.saw.smartybj.newscenterpage.BaseNewsCenterPage;
@@ -23,6 +24,8 @@ import com.saw.smartybj.view.LeftMenuFragment.OnSwitchPageListener;
 import android.content.Context;
 import android.text.TextUtils;
 import android.view.Gravity;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.TextView;
 
 /**
@@ -142,6 +145,26 @@ public class NewsCenterBaseTagPager extends BaseTagPage {
 		fl_content.removeAllViews();
 		//初始化数据
 		baseNewsCenterPage.initData();
+		//判断 如果是组图，lisiorgrid切换的按钮显示
+		if (baseNewsCenterPage instanceof PhotosBaseNewsCenterPage) {
+			//组图
+			//显示lisiorgrid切换的按钮
+			ib_listorgrid.setVisibility(View.VISIBLE);
+			//给事件，点击做list和grid切换
+			ib_listorgrid.setTag(baseNewsCenterPage);
+			ib_listorgrid.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View arg0) {
+					// TODO Auto-generated method stub
+					((PhotosBaseNewsCenterPage)ib_listorgrid.getTag()).switchListViewOrGridView(ib_listorgrid);
+					
+				}
+			});
+		} else {
+			//隐藏
+			ib_listorgrid.setVisibility(View.GONE);
+		}
 		//添加到白纸中
 		fl_content.addView(baseNewsCenterPage.getRoot());
 	}
