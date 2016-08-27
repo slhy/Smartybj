@@ -28,6 +28,7 @@ import com.saw.smartybj.MainActivity;
 import com.saw.smartybj.R;
 import com.saw.smartybj.domain.PhotosData;
 import com.saw.smartybj.domain.PhotosData.PhotosData_Data.PhotosNews;
+import com.saw.smartybj.utils.BitmapCacheUtils;
 import com.saw.smartybj.utils.MyConstants;
 import com.saw.smartybj.utils.SpTools;
 
@@ -51,10 +52,13 @@ public class PhotosBaseNewsCenterPage extends BaseNewsCenterPage {
 	private BitmapUtils bitmapUtils;
 	
 	private Boolean isShowList = true;//是否显示listview
+
+	private BitmapCacheUtils bitmapCacheUtils;
 	public PhotosBaseNewsCenterPage(MainActivity mainActivity) {
 		super(mainActivity);
 		bitmapUtils = new BitmapUtils(mainActivity);
 		bitmapUtils.configDefaultBitmapConfig(Config.ARGB_4444);
+		bitmapCacheUtils = new BitmapCacheUtils(mainActivity);
 	}
 
 	@Override
@@ -115,13 +119,11 @@ public class PhotosBaseNewsCenterPage extends BaseNewsCenterPage {
 		//从网络取数据
 		getDataFromNet();
 		
-		System.out.println("news---->"+photosNews);
 		super.initData();
 	}
 
 	private void getDataFromNet() {
 		HttpUtils httpUtils = new HttpUtils();
-		System.out.println("url----------->"+MyConstants.PHOTOSURL);
 		httpUtils.send(HttpMethod.GET,  MyConstants.PHOTOSURL, new RequestCallBack<String>() {
 
 			@Override
@@ -129,7 +131,6 @@ public class PhotosBaseNewsCenterPage extends BaseNewsCenterPage {
 				//请求数据成功
 				//获取组图的json数据
 				String jsonData = responseInfo.result;
-				System.out.println("data------->"+jsonData);
 				//缓存
 				SpTools.setString(mainActivity, MyConstants.PHOTOSURL, jsonData);
 				//解析json数据
@@ -214,7 +215,8 @@ public class PhotosBaseNewsCenterPage extends BaseNewsCenterPage {
 			//设置名字
 			holder.tv_desc.setText(pn.title);
 			//设置图片
-			bitmapUtils.display(holder.iv_pic, MyConstants.REQUEST_HOST + pn.listimage);
+			bitmapCacheUtils.display(holder.iv_pic, MyConstants.REQUEST_HOST + pn.listimage);
+			//bitmapUtils.display(holder.iv_pic, MyConstants.REQUEST_HOST + pn.listimage);
 			
 			return convertView;
 			
