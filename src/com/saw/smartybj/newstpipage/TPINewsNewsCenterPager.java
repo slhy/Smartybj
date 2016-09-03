@@ -132,7 +132,7 @@ public class TPINewsNewsCenterPager {
 				String newsid = tpiNewsData_Data_ListNewsData.id;
 				//保存id sharedprefrences
 				String readIDs = SpTools.getString(mainActivity, MyConstants.READNEWSIDS, null);
-				if (TextUtils.isEmpty(newsid)) {
+				if (TextUtils.isEmpty(readIDs)) {
 					//第一次 没有保存过id
 					readIDs = newsid;//保存当前新闻的id
 				} else if (! readIDs.contains(newsid)) {
