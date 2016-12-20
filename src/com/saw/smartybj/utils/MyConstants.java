@@ -8,7 +8,7 @@ package com.saw.smartybj.utils;
  * @描述 TODO
  */
 public interface MyConstants {
-	String HOST = "http://192.168.1.103";
+	String HOST = "http://120.76.205.206:81";
 	String REQUEST_HOST = HOST + "/zhbj";
 	String REQUEST_URL = HOST + "/index.php/m/";
 	String PHOTOSURL = REQUEST_HOST + "/photos/photos_1.json";
